@@ -1,17 +1,45 @@
-# PRCMG Governor Simulation (ME319 Report)
-**Project Title:** Inertial–Hydraulic Dashpot Governor with Mechanical Rate Compensation (PRCMG)
+# Inertial-Hydraulic Dashpot Governor (PRCMG) Simulation
 
-## Overview
-This repository contains the MATLAB/Octave simulation code corresponding to **Section 4.5 (Simulation & Results)** of the IEEE-style control systems report. 
+This repository contains the official MATLAB/Octave simulation code, mathematical models, and transient response results for the IEEE-style control systems report.
 
-## File Description
-- `simulation_prcmg.m`: Executes the LTI model simulation comparing Open-Loop versus Closed-Loop (PRCMG) behavior under step load disturbances.
+---
 
-## Simulation Scenarios Covered
-1. **Case 1 (+30% Load Increase):** $T_L: 1 \rightarrow 1.3$ (Open-loop drift vs. Closed-loop regulation for speed $\omega(t)$ and valve position $x_v(t)$).
-2. **Case 2 (-30% Load Decrease):** $T_L: 1 \rightarrow 0.7$ (Open-loop surge vs. Closed-loop damped suppression).
+## Project & Student Details
+* **Project Title:** Inertial-Hydraulic Dashpot Governor (PRCMG) Simulation
+* **Course:** ME319 (Control Systems) — Assignment 1
+* **Prepared By:** Ganesh Kumar Meena
+* **Roll Number:** 24B2295
+* **Submission Type:** Individual Assignment
 
-## How to Run
-1. Open MATLAB or GNU Octave.
-2. Run the script `simulation_prcmg.m`.
-3. The generated plots will display the engine speed response $\omega(t)$ and throttle valve actuation $x_v(t)$ for all open-loop and closed-loop cases.
+---
+
+## Project Overview
+The **Passive Rate-Compensated Mechanical Governor (PRCMG)** integrates a centrifugal flyball mechanism with a hydraulic dashpot to regulate engine speed against variable external step load disturbances. This project analyzes the linear time-invariant (LTI) model, closed-loop stability via the Routh-Hurwitz criterion, and transient performance under $\pm 30\%$ load changes.
+
+---
+
+## Software & Toolchain Requirements
+To successfully run and reproduce the simulations, ensure the following software is installed:
+* **MATLAB** (Recommended: R2024a or newer) or **GNU Octave** (v8.0 or higher)
+* **Control System Toolbox** (Required for transfer function definitions and step response functions)
+
+---
+
+## Model Parameters
+The simulation uses the following normalized physical parameters:
+* **Engine Inertia ($J$):** $1.0$
+* **Engine Friction ($B$):** $0.1$
+* **Equivalent Linkage Mass ($M_{eq}$):** $0.5$
+* **Dashpot Damping ($c_d$):** $0.8$
+* **Spring Stiffness ($K_s$):** $2.0$
+* **Centrifugal Control Gain ($K_w$):** $1.5$
+
+---
+
+## How to Run and Reproduce Results
+
+Follow these steps to execute the simulation and generate the plots locally:
+
+1. **Clone or Download** this repository to your local machine:
+   ```bash
+   git clone [https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git]
