@@ -1,5 +1,5 @@
 % =========================================================================
-% PRCMG Governor Simulation & CSV Data Generation Script
+% HMPSG Governor Simulation & CSV Data Generation Script
 % =========================================================================
 
 clear; clc;
@@ -10,14 +10,13 @@ B = 0.1;       % Internal Viscous Friction
 M_eq = 0.5;    % Equivalent Linkage Mass
 c_d = 0.8;     % Dashpot Damping Coefficient
 K_s = 2.0;     % Reference Spring Stiffness
-K_w = 1.5;     % Centrifugal Control Gain
-K_t = 1.0;     % Valve Gain
+K_p = 1.5;     % Fluidic Pressure-Sensing Control Gain
 
 % 2. Time Vector Generation (approx. 100 data points from t = 0 to 10s)
 Time_sec = linspace(0, 10, 100)';
 
 % 3. Analytical Response Simulation based on System Equations
-omega_n = sqrt((K_s + K_w*K_t) / (J * M_eq));
+omega_n = sqrt((K_s + K_p) / (J * M_eq));
 zeta = (B * M_eq + J * c_d) / (2 * J * M_eq * omega_n);
 
 OpenLoop_Speed_Omega = zeros(size(Time_sec));
@@ -41,3 +40,4 @@ end
 % 4. Create Table and Export to CSV File
 results_table = table(Time_sec, OpenLoop_Speed_Omega, ClosedLoop_Speed_Omega, Valve_Position_Xv);
 writetable(results_table, 'results.csv');
+disp('HMPSG simulation completed and results.csv generated successfully.');
