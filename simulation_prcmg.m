@@ -41,7 +41,6 @@ delta_dec = -0.3; % -30% Load disturbance
 [xv_cl_inc, ~] = step(delta_inc * (Gc / (1 + Gol)), t);
 [xv_cl_dec, ~] = step(delta_dec * (Gc / (1 + Gol)), t);
 
-% Additional Extra Calculations:
 % 1. Tracking Error (Deviation from setpoint 1.0 for closed-loop)
 error_inc = omega_cl_inc;
 error_dec = omega_cl_dec;
