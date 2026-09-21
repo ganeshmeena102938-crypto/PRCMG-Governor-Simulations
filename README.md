@@ -1,11 +1,11 @@
-# Inertial-Hydraulic Dashpot Governor (PRCMG) Simulation
+# Hydro-Mechanical Pressure-Sensing Governor (HMPSG) Simulation
 
 This repository contains the official MATLAB/Octave simulation code, mathematical models, and transient response results for the IEEE-style control systems report.
 
 ---
 
 ## Project & Student Details
-* **Project Title:** Inertial-Hydraulic Dashpot Governor (PRCMG) Simulation
+* **Project Title:** Hydro-Mechanical Pressure-Sensing Governor (HMPSG) Simulation
 * **Course:** ME319 (Control Systems) — Assignment 1
 * **Prepared By:** Ganesh Kumar Meena
 * **Roll Number:** 24B2295
@@ -14,7 +14,7 @@ This repository contains the official MATLAB/Octave simulation code, mathematica
 ---
 
 ## Project Overview
-The **Passive Rate-Compensated Mechanical Governor (PRCMG)** integrates a centrifugal flyball mechanism with a hydraulic dashpot to regulate engine speed against variable external step load disturbances. This project analyzes the linear time-invariant (LTI) model, closed-loop stability via the Routh-Hurwitz criterion, and transient performance under $\pm 30\%$ load changes.
+The **Hydro-Mechanical Pressure-Sensing Governor (HMPSG)** integrates a gear-pump-driven fluidic pressure sensing piston with a dashpot-based rate compensation linkage to automatically regulate engine speed against variable external step load disturbances. This project analyzes the linear time-invariant (LTI) model, closed-loop stability via the Routh-Hurwitz criterion, and transient performance under $\pm 30\%$ load changes.
 
 ---
 
@@ -32,7 +32,7 @@ The simulation uses the following normalized physical parameters:
 * **Equivalent Linkage Mass ($M_{eq}$):** $0.5$
 * **Dashpot Damping ($c_d$):** $0.8$
 * **Spring Stiffness ($K_s$):** $2.0$
-* **Centrifugal Control Gain ($K_w$):** $1.5$
+* **Centrifugal Control Gain ($K_p$):** $1.5$
 
 ---
 
@@ -42,4 +42,4 @@ Follow these steps to execute the simulation and generate the plots locally:
 
 1. **Clone or Download** this repository to your local machine:
    ```bash
-   git clone [https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git]
+   git clone [https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git](https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git)
