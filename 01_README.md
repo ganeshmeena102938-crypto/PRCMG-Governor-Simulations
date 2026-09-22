@@ -20,7 +20,7 @@ The **Hydro-Mechanical Pressure-Sensing Governor (HMPSG)** integrates a gear-pum
 
 ## Software & Toolchain Requirements
 To successfully run and reproduce the simulations, ensure the following software is installed:
-* **MATLAB** (Recommended: R2024a or newer) or **GNU Octave** (v8.0 or higher)
+* **MATLAB** (Recommended: R2024a or newer)
 * **Control System Toolbox** (Required for transfer function definitions and step response functions)
 
 ---
