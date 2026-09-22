@@ -1,43 +1,99 @@
 % =========================================================================
-% HMPSG Governor Simulation & CSV Data Generation Script
+% HMPSG Governor Simulation Script (IEEE Control Systems Report - ME319)
 % =========================================================================
 
-clear; clc;
+clear; clc; close all;
 
-% 1. Model Parameters (Normalized)
-J = 1.0;       % Engine Rotational Inertia
-B = 0.1;       % Internal Viscous Friction
-M_eq = 0.5;    % Equivalent Linkage Mass
-c_d = 0.8;     % Dashpot Damping Coefficient
-K_s = 2.0;     % Reference Spring Stiffness
-K_p = 1.5;     % Fluidic Pressure-Sensing Control Gain
+%% 1. System Parameters (Normalized Values)
+J   = 1.0;   % Engine rotational inertia
+B   = 0.1;   % Engine viscous friction
+Meq = 0.5;   % Equivalent linkage mass
+cd  = 0.8;   % Dashpot damping coefficient
+Ks  = 2.0;   % Reference spring stiffness
+Kp  = 1.5;   % Fluidic Pressure-Sensing Control Gain
+Kt  = 1.0;   % Throttle Valve Actuator Gain Constant
 
-% 2. Time Vector Generation (approx. 100 data points from t = 0 to 10s)
-Time_sec = linspace(0, 10, 100)';
+%% 2. Transfer Function Definitions
+Gp = tf(1, [J, B]);
+Gc = tf(Kp * Kt, [Meq, cd, Ks]);
 
-% 3. Analytical Response Simulation based on System Equations
-omega_n = sqrt((K_s + K_p) / (J * M_eq));
-zeta = (B * M_eq + J * c_d) / (2 * J * M_eq * omega_n);
+Gol = Gc * Gp;                     
+Gcl_ref = feedback(Gol, 1);         
+G_dist  = feedback(Gp, Gc);         
 
-OpenLoop_Speed_Omega = zeros(size(Time_sec));
-ClosedLoop_Speed_Omega = zeros(size(Time_sec));
-Valve_Position_Xv = zeros(size(Time_sec));
+%% 3. Time Vector & Disturbance Inputs
+t = 0:0.01:25; 
 
-for i = 1:length(Time_sec)
-    t = Time_sec(i);
-    if t < 0.5
-        OpenLoop_Speed_Omega(i) = 1.0;
-        ClosedLoop_Speed_Omega(i) = 1.0;
-        Valve_Position_Xv(i) = 1.0;
-    else
-        dt = t - 0.5;
-        OpenLoop_Speed_Omega(i) = 1.0 - 0.3 * (1 - exp(-0.5*dt));
-        ClosedLoop_Speed_Omega(i) = 1.0 - 0.3 * exp(-zeta*omega_n*dt) * cos(omega_n*dt);
-        Valve_Position_Xv(i) = 1.0 + 0.25 * (1 - exp(-0.8*dt));
-    end
-end
+delta_inc = 0.3;  % +30% Load disturbance
+delta_dec = -0.3; % -30% Load disturbance
 
-% 4. Create Table and Export to CSV File
-results_table = table(Time_sec, OpenLoop_Speed_Omega, ClosedLoop_Speed_Omega, Valve_Position_Xv);
-writetable(results_table, 'results.csv');
-disp('HMPSG simulation completed and results.csv generated successfully.');
+%% 4. Response Calculations 
+[omega_ol_inc, ~] = step(-delta_inc * G_dist, t);
+[omega_ol_dec, ~] = step(-delta_dec * G_dist, t);
+
+[omega_cl_inc, ~] = step(delta_inc * feedback(1, Gol), t);
+[omega_cl_dec, ~] = step(delta_dec * feedback(1, Gol), t);
+
+[xv_cl_inc, ~] = step(delta_inc * (Gc / (1 + Gol)), t);
+[xv_cl_dec, ~] = step(delta_dec * (Gc / (1 + Gol)), t);
+
+error_inc = omega_cl_inc;
+error_dec = omega_cl_dec;
+
+dt = t(2) - t(1);
+vel_inc = [0, diff(xv_cl_inc) / dt]';
+vel_dec = [0, diff(xv_cl_dec) / dt]';
+
+%% 5. Plotting Results
+figure('Name', 'HMPSG Comprehensive Analysis', 'Position', [50, 50, 1000, 1000], 'Color', 'w');
+
+subplot(4,1,1);
+plot(t, omega_ol_inc + 1, '--r', 'LineWidth', 1.8); hold on;
+plot(t, omega_cl_inc + 1, '-r',  'LineWidth', 2.2);
+plot(t, omega_ol_dec + 1, '--b', 'LineWidth', 1.8);
+plot(t, omega_cl_dec + 1, '-b',  'LineWidth', 2.2);
+grid on; grid minor;
+title('Engine Speed Response \omega(t) under Step Load Disturbances');
+ylabel('Speed (\omega)');
+legend('Open-Loop (+30%)', 'Closed-Loop (+30%)', ...
+       'Open-Loop (-30%)', 'Closed-Loop (-30%)', ...
+       'Location', 'southeast');
+xlim([0 25]);
+
+subplot(4,1,2);
+plot(t, xv_cl_inc + 1, '-r', 'LineWidth', 2.0); hold on;
+plot(t, xv_cl_dec + 1, '-b', 'LineWidth', 2.0);
+grid on; grid minor;
+title('Throttle Valve Actuation Profile x_v(t)');
+ylabel('Valve Pos (x_v)');
+legend('Valve (+30%)', 'Valve (-30%)', 'Location', 'northeast');
+xlim([0 25]);
+
+subplot(4,1,3);
+plot(t, error_inc, '-r', 'LineWidth', 1.8); hold on;
+plot(t, error_dec, '-b', 'LineWidth', 1.8);
+grid on; grid minor;
+title('Closed-Loop Speed Tracking Error e(t)');
+ylabel('Error');
+legend('Error (+30%)', 'Error (-30%)', 'Location', 'northeast');
+xlim([0 25]);
+
+subplot(4,1,4);
+plot(t, vel_inc, '-r', 'LineWidth', 1.8); hold on;
+plot(t, vel_dec, '-b', 'LineWidth', 1.8);
+grid on; grid minor;
+title('Control Effort - Throttle Valve Velocity (dx_v/dt)');
+xlabel('Time (s)');
+ylabel('Velocity');
+legend('Velocity (+30%)', 'Velocity (-30%)', 'Location', 'northeast');
+xlim([0 25]);
+
+saveas(gcf, 'simulation_plots.png');
+disp('Main time-domain simulation plots saved as simulation_plots.png');
+
+figure('Name', 'HMPSG Frequency Response - Bode Plot', 'Position', [1100, 50, 700, 500], 'Color', 'w');
+bode(Gol);
+grid on; grid minor;
+title('Bode Diagram of Open-Loop System Gol(s)');
+saveas(gcf, 'bode_plot.png');
+disp('Bode frequency response plot saved as bode_plot.png');
