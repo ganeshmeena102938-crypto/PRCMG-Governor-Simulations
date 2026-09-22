@@ -32,8 +32,7 @@ The simulation uses the following normalized physical parameters:
 * **Equivalent Linkage Mass ($M_{eq}$):** $0.5$
 * **Dashpot Damping ($c_d$):** $0.8$
 * **Spring Stiffness ($K_s$):** $2.0$
-* **Centrifugal Control Gain ($K_p$):** $1.5$
-
+* **Combined Control Gain ($K_p K_t$):** $1.5$ ($K_p = 1.5, K_t = 1.0$)
 ---
 
 ## How to Run and Reproduce Results
@@ -42,4 +41,4 @@ Follow these steps to execute the simulation and generate the plots locally:
 
 1. **Clone or Download** this repository to your local machine:
    ```bash
-   git clone [https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git](https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git)
+  git clone https://github.com/ganeshmeena102938-crypto/PRCMG-Governor-Simulations.git
