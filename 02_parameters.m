@@ -15,5 +15,6 @@ K_s = 2.0;     % Reference Spring Stiffness
 
 % Control & Sensing Gain
 K_p = 1.5;     % Fluidic Pressure-Sensing Control Gain
+K_t = 1.0;     % Throttle Valve Actuator Gain Constant
 
 disp('Model parameters loaded successfully.');
