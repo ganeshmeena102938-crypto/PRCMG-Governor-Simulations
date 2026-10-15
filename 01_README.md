@@ -9,7 +9,6 @@ This repository contains the official MATLAB/Octave simulation code, mathematica
 * **Course:** ME319 (Control Systems) — Assignment 1
 * **Prepared By:** Ganesh Kumar Meena
 * **Roll Number:** 24B2295
-* **Submission Type:** Individual Assignment
 
 ---
 
